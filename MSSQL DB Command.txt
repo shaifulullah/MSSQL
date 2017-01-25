@@ -1,0 +1,45 @@
+=====MSSQL table creation =======
+create table tblEmployees
+(
+	EmployeeId int identity primary key,
+	Name nvarchar(50),
+	Gender nvarchar(10),
+	Salary int
+)
+
+Insert into tblEmployees values('Mark','Male',5000)
+Insert into tblEmployees values('Mike','Male',5010)
+Insert into tblEmployees values('Jhon','Male',6000)
+Insert into tblEmployees values('Steve','Male',7000)
+Insert into tblEmployees values('Sara','Female',3000)
+Insert into tblEmployees values('Sana','Female',8000)
+Insert into tblEmployees values('Pam','Female',3000)
+
+
+Select * from tblEmployees
+
+========and store procedure=============
+Create Procedure spAddEmployee
+@Name nvarchar(50),
+@Gender nvarchar(20),
+@Salary int,
+@EmployeeId int Out
+as
+Begin
+	Insert into tblEmployees values (@Name, @Gender, @Salary)
+	Select @EmployeeId = SCOPE_IDENTITY()
+End
+
+
+Declare @EmpId int
+Execute spAddEmployee 'Jasmine','Female','4500',@EmpId out
+Print 'Employee ID = ' + Cast(@EmpId as nvarchar(2))
+
+===============web.config file configuration===================
+  <connectionStrings>
+    <add name ="DBCS"
+         connectionString="data source = LAPTOP-PDT6QBKN\SQLEXPRESS; database = sample; integrated security = SSPI"
+         providerName ="System.Data.SqlClient"/>
+  </connectionStrings>
+
+
